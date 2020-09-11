@@ -7,5 +7,4 @@ void main(){
     home: ContactPage(),
     debugShowCheckedModeBanner: false,
   ));
-  //nilzon gay
 }
