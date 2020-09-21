@@ -41,7 +41,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	    <key>NSPhotoLibraryUsageDescription</key>        // COLE ESTA E AS OUTRAS 5 LINHAS ABAIXO
+	    //permissões de acesso IOS.
+	    <key>NSPhotoLibraryUsageDescription</key>
         <string>Tirar fotos dos contatos.</string>
         <key>NSCameraUsageDescription</key>
         <string>Selecionar uma foto de contato da galeria.</string>
