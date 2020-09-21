@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:agenda_contatos/helpers/contact_helper.dart';
+import 'package:agenda_contatos/ui/contact_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,11 +18,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    helper.getAllContacts().then((list){ //carrega a lista de contatos do banco, e adiciona na lista "contacts" criada no inicio.
-      setState(() {
-        contacts = list;
-      });
-    });
+
+    _getAllContacts();
   }
 
   @override
@@ -34,7 +32,9 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          _showContactPage();
+        },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,
       ),
@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
   Widget _contactCard(BuildContext context, int index){
     return GestureDetector(
       child: Card(
+        color: Colors.white70,
         child: Padding( // um filho dentro do outro, pois se nao, nao seria possível adicionar o padding.
           padding: EdgeInsets.all(10.0),
           child: Row(
@@ -89,8 +90,33 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      onTap: (){
+        _showContactPage(contact: contacts[index]);
+      },
     );
   }
 
+  void _showContactPage({Contact contact}) async {//passando um contato OU NÃO para a função.
+    //fazendo dessa forma na linha abaixo, mostra que está recebendo um retorno, dos dados, da tela CONTACT PAGE.
+    final recContact = await Navigator.push(context,
+      MaterialPageRoute(builder: (context)=>ContactPage(contact: contact,))
+    );
+    if(recContact != null){
+      if(contact != null){
+        await helper.updateContact(recContact);
+      }else{
+        await helper.saveContacts(recContact);
+      }
+      _getAllContacts();
+    }
+  }
+
+  void _getAllContacts(){ //função para carregar todos os contatos.
+    helper.getAllContacts().then((list){ //carrega a lista de contatos do banco, e adiciona na lista "contacts" criada no inicio.
+      setState(() {
+        contacts = list;
+      });
+    });
+  }
 
 }
